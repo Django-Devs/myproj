@@ -12,9 +12,78 @@
 
     <!-- Main css -->
     <link rel="stylesheet" href="{% static 'todo_app/css/style.css' %}">
+    <style>
+        .message-dialog {
+          position: absolute;
+          top: 20%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: 9999;
+          padding: 20px;
+          max-width: auto;
+          text-align: center;
+        }
+        
+        .notification {
+          background-color: #f8f8f8;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          padding: 10px;
+          margin-bottom: 10px;
+          display: flex;
+          align-items: center;
+        }
+        
+        .notification.success {
+          background-color: #dff0d8;
+          border-color: #d6e9c6;
+        }
+        
+        .notification.warning {
+          background-color: #fcf8e3;
+          border-color: #faebcc;
+        }
+        
+        .notification.error {
+          background-color: #f2dede;
+          border-color: #ebccd1;
+        }
+        
+        .notification:before {
+          font-family: "Arial", sans-serif;
+          font-weight: bold;
+          font-size: 18px;
+          margin-right: 8px;
+        }
+        
+        .notification.success:before {
+          content: '\2713';
+          color: #3c763d;
+        }
+        
+        .notification.warning:before {
+          content: '\26A0';
+          color: #8a6d3b;
+        }
+        
+        .notification.error:before {
+          content: '\2717';
+          color: #a94442;
+        }
+    </style>
 </head>
 <body>
 <div class="main">
+    {% if messages %}
+    <div class="message-dialog" id="msg">
+      {% for message in messages %}
+        <div class="notification {{ message.tags }}">
+          <span class="icon"></span>
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+    {% endif %}
     <!-- Sing in  Form -->
     <section class="sign-in">
         <div class="container">
@@ -27,15 +96,20 @@
                 <div class="signin-form">
                     <h2 class="form-title">Sign up</h2>
                     <form method="POST" class="register-form" id="login-form">
+
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="email"><i class="zmdi zmdi-email"></i></label>
-                            <input type="email" name="email" id="email" value="email" placeholder="Your Email"/>
+                            <input type="email" name="email" id="email" placeholder="Your Email"/>
                         </div>
                         <div class="form-group">
                             <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
                             <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
                         </div>
+                        <div class="form-group">
+                          <input type="checkbox" name="remember-me" id="show" class="agree-term" onclick="myFunc()"/>
+                          <label for="show" class="label-agree-term"><span><span></span></span>Show password</label>
+                      </div>
                         <div class="form-group">
                             <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
                             <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
@@ -59,5 +133,15 @@
 </div>
     <script src="{% static 'todo_app/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'todo_app/js/main.js' %}"></script>
+    <script>
+      function myFunc(){
+            var x = document.getElementById("your_pass");
+                if (x.type === "password"){
+                    x.type = "text";
+                }else{
+                    x.type = "password";
+                }
+            }
+    </script>
 </body>
 </html>

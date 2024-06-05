@@ -126,4 +126,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #Adding custom user
-AUTH_USER_MODEL = 'todo_app.Account'
+AUTH_USER_MODEL = 'todo_app.myUser'
+
+#Login_redirect
+LOGIN_URL = 'index'
